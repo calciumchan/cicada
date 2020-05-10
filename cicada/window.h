@@ -14,10 +14,11 @@ class window{
 	void step();
 	void set_scale(float _scale);
 	float get_scale();
+	SDL_Window * main_window;
+	SDL_Renderer * main_renderer;
+	
 	private:
 	int w, h, min_w, min_h;
 	bool started;
 	float scale;
-	SDL_Window * main_window;
-	SDL_Renderer * main_renderer;
 };

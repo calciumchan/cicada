@@ -1,6 +1,6 @@
 #this make file is basiclaly just a copy of the one on the lazyfoo tutorials
 
-OBJS = main.cpp 
+OBJS = *.cpp cicada/*.cpp
 CC = g++
 COMPILER_FLAGS = -w
 LINKER_FLAGS = -lSDL2
