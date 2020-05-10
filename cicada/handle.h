@@ -13,5 +13,4 @@ class handle{
 
 	private:
 	SDL_Event e;
-	
 };

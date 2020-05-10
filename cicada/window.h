@@ -12,7 +12,9 @@ class window{
 	void restart();
 	void end();
 	void step();
+	void draw();
 	void set_scale(float _scale);
+	void clear();
 	float get_scale();
 	SDL_Window * main_window;
 	SDL_Renderer * main_renderer;
