@@ -1,4 +1,4 @@
-CICADA ENGINE
+CICADA ENGINE<br>
 an SDL2 wrapper engine made to set up basic functions i use while making games.
 SDL requires a fair amount of code to get up and running, as well as lacks certain drawing functions and control handling.
 the main goal of this engine is to simply streamline SDL2, especially in areas like setting up windows, input handling, and multiple object handling. this is so that i can use SDL2 and c++ for game development without having to write a ton of code each time i start a new project, this will come in very handy for game jams or prototyping where time is limited.
