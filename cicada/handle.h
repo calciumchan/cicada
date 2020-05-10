@@ -3,6 +3,8 @@
 //should handle input handling as well
 //i had a pretty good handler in the last version of this so i might just copy that over
 
+#include "meta.h"
+
 class handle{
 	public:
 	handle();
@@ -12,4 +14,4 @@ class handle{
 	private:
 	SDL_Event e;
 	
-}
+};

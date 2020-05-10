@@ -3,10 +3,12 @@
 //needs a lot of work and functions added, kinda barebones rn
 //the scale functions are probably my favorite part of this
 
+#include "meta.h"
+
 class window{
 	public:
 	window();
-	start();
+	void start();
 	void restart();
 	void end();
 	void step();
@@ -16,6 +18,6 @@ class window{
 	int w, h, min_w, min_h;
 	bool started;
 	float scale;
-	SDL_Window * window;
-	SDL_Renderer * renderer;
-}
+	SDL_Window * main_window;
+	SDL_Renderer * main_renderer;
+};
