@@ -10,5 +10,9 @@ void cicada_step(){
 }
 
 void cicada_draw(){
+	
+}
 
+bool cicada_quit(){
+	return true;
 }

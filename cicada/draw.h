@@ -1,6 +1,8 @@
 //this file should contain declarations of all the drawing functions
 //the functions source code should be seperated per function like draw_clear.cpp draw_line.cpp
 
+#pragma once
+
 #include "meta.h"
 
 void draw_set_color();
