@@ -1,7 +1,7 @@
 //main source file
 #include "cicada.h"
 int main( int argc, char* args[] ){
-	window testwindow;
-	testwindow.start();
-	SDL_Delay(1000);
+	cicada_start();
+	cicada_step();
+	cicada_draw();
 }

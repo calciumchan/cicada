@@ -3,11 +3,12 @@
 //needs a lot of work and functions added, kinda barebones rn
 //the scale functions are probably my favorite part of this
 
+#pragma once
 #include "meta.h"
 
-class window{
+class ce_window{
 	public:
-	window();
+	ce_window();
 	void start();
 	void restart();
 	void end();
