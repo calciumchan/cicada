@@ -12,7 +12,8 @@ class ce_handle{
 	void step();
 	void end();
 	ce_window * focusedwindow;
-
+	bool quit;
+	
 	private:
 	SDL_Event e;
 };

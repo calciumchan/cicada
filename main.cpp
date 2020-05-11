@@ -5,11 +5,11 @@ int main( int argc, char* args[] ){
 	bool quit = false;
 	ce_window testwindow;
 	testwindow.start();
-	//while(cicada_quit() == false){
-		//cicada_step();
-		//cicada_draw();
+	while(cicada_quit() == false){
+		cicada_step();
+		cicada_draw();
 		testwindow.draw();
-		SDL_Delay(1000);
-	//}
+		SDL_Delay(100);
+	}
 	testwindow.end();
 }
