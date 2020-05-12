@@ -13,4 +13,7 @@ curly brackets should be on the same line, not one line down<br>
 
 
 
-please keep in mind i have no idea what im doing, so this entire things will probably be a god awful mess (please submit pull requests i have no idea what im doing)<br>
+please keep in mind i have no idea what im doing, so this entire things will probably be a god awful mess (please submit pull requests i have no idea what im doing)<br><br><br>
+
+SETUP<br>
+i develop pretty much exclusively in linux, so thats what all my work here is geared towards. SDL is cross platform, so it shouldnt be very difficult to get things set up to develop and compile on other platforms, but im not quite there yet. if youre looking to help out with the project, and youre on windows or mac, i would love your help getting things set up to work on those platforms! but for right now im mostly focusing on getting the ground work set so i can actually develop things with this engine.
