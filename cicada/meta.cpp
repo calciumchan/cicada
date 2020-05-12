@@ -1,10 +1,12 @@
-#include "cicada.h"
-#include "handle.h"
+#include "meta.h"
 
+
+//define these mother fuckers
 bool g_quit = false;
 int g_tickrate = 60;
 int g_framelimit = 60;
 SDL_Event g_event;
+//ce_window focusedwindow = NULL;
 
 void cicada_start(){
 	//randomize
