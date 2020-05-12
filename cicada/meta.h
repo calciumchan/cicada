@@ -19,6 +19,7 @@ class ce_spritesheet;//this still needs to be defined somewhere
 //fuck it well just use this as the main include i guess
 #include "window.h"
 #include "draw.h"
+#include "spritesheet.h"
 
 extern bool g_quit;
 extern int g_tickrate;
