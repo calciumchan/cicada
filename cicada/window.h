@@ -14,14 +14,18 @@ class ce_window{
 	void end();
 	void step();
 	void draw();
-	void set_scale(float _scale);
-	float get_scale();
+	void set_scale(int _scale); 
+	int get_scale();
+	int get_width();
+	int get_height();
+	int get_width_scaled();
+	int get_height_scaled();
 	void set_focus();
 	SDL_Window * main_window;
 	SDL_Renderer * main_renderer;
 	
 	private:
-	int w, h, min_w, min_h;
-	bool started;
-	float scale;
+	int w, h, min_w, min_h, set_w, set_h;
+	bool active;
+	int scale;
 };

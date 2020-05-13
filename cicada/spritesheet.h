@@ -9,12 +9,14 @@
 
 #pragma once
 #include "meta.h"
+#include <string>
 
 class ce_spritesheet{
 	public:
 	ce_spritesheet();
 	void import();
-	void set_name();
+	void set_name(std::string _name);
+	std::string get_name();
 	void set_themeable( bool _themeable );
 	int get_width();
 	int get_height();
@@ -23,4 +25,5 @@ class ce_spritesheet{
 	int w,h;
 	int scale;
 	bool themeable;//if the sheet can be loaded from a theme
+	std::string name;
 };
