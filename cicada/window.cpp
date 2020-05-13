@@ -17,3 +17,9 @@ void ce_window :: end(){
 	SDL_DestroyRenderer(main_renderer);
 	main_renderer = NULL;
 }
+
+void ce_window :: set_focus(){
+	//this should set the focus of drawing functions to be this window
+	//g_focusedwindow should be used when drawing, i hope this works
+	g_focusedwindow = this;
+}

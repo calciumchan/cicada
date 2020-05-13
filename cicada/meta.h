@@ -21,11 +21,12 @@ class ce_spritesheet;//this still needs to be defined somewhere
 #include "draw.h"
 #include "spritesheet.h"
 
+//global variables
 extern bool g_quit;
 extern int g_tickrate;
 extern int g_framelimit;
 extern SDL_Event g_event;
-extern ce_window focusedwindow;
+extern ce_window * g_focusedwindow;
 
 void cicada_start();
 void cicada_step();

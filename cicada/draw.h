@@ -5,9 +5,10 @@
 
 #include "meta.h"
 
-void draw_set_color();
+void draw_set_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
 void draw_clear();
+void draw_point(int x, int y);
 void draw_line(int x, int y, int x2, int y2);
 void draw_ellipse(int x, int y, int x2, int y2);
 void draw_circle(int x, int y, int radius); //ive always wanted this, please dear god let me have this
