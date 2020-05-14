@@ -32,3 +32,7 @@ void cicada_draw(){
 bool cicada_quit(){
 	return g_quit;
 }
+
+void cicada_log(){
+	//this will log an output to the terminal maybe, idk if im going to keep this just yet
+}

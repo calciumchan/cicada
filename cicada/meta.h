@@ -23,6 +23,7 @@ class ce_spritesheet;//this still needs to be defined somewhere
 #include "window.h"
 #include "draw.h"
 #include "spritesheet.h"
+#include "math.h"
 
 //global variables
 extern bool g_quit;
@@ -35,3 +36,4 @@ void cicada_start();
 void cicada_step();
 void cicada_draw();
 bool cicada_quit();
+void cicada_log();//not done, idk if this is worth it

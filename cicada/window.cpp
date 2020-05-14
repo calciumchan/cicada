@@ -12,11 +12,13 @@ ce_window :: ce_window(){
 	min_h = set_h;
 	w = set_w;
 	h = set_h;
+	//resizable flag
+	resizable = false;
 }
 
 void ce_window :: start(){
 	//create the window and renderer and set the active flag
-	SDL_CreateWindowAndRenderer(set_w,set_h,SDL_WINDOW_RESIZABLE,&main_window,&main_renderer);
+	SDL_CreateWindowAndRenderer(set_w,set_h,0,&main_window,&main_renderer);
 	bool active=true;
 }
 
@@ -64,9 +66,27 @@ void ce_window :: set_scale(int _scale){
 
 int ce_window :: get_scale(){
 	if( scale == -1 ){
-		return std::min(1,5);
+		//set the scale automatically based on the windows size
+		//first we make sure that the window size isnt below the default
+		//set_w and set_h are the defaults so we use those to set the automatic scale
+		if( w < set_w || h < set_h){
+			return 1;
+		}else if( w < h ){
+			return w/set_w;
+		}else{
+			return h/set_h;
+		}
 	}else{
 		return scale;
+	}
+}
+
+void ce_window :: set_resizable(bool _resizable){
+	//im using an ifelse because SDL wants an SDL_BOOL instead of a bool????
+	if( _resizable == true){
+		SDL_SetWindowResizable(main_window, SDL_TRUE);
+	}else{
+		SDL_SetWindowResizable(main_window, SDL_FALSE);
 	}
 }
 

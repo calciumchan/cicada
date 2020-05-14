@@ -9,15 +9,15 @@ int main( int argc, char* args[] ){
 	ce_window multiwindow;
 	testwindow.start();
 	testwindow.set_focus();
-
+	//testwindow.set_resizable(true);
 	while(cicada_quit() == false){
 		cicada_step();
 		testwindow.step();
 		draw_set_color(255, 255, 255, 255);
 		draw_clear();
 		draw_set_color(0, 0, 0, 100);
-		for(int i = 0; i<500; i++){
-			draw_point(rand()%testwindow.get_width(),rand()%testwindow.get_height());
+		for(int i = 0; i<5000; i++){
+			draw_point(random(testwindow.get_width()),random(testwindow.get_height()));
 		}
 		testwindow.draw();
 		cicada_draw();

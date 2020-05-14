@@ -10,12 +10,12 @@ class ce_window{
 	public:
 	ce_window();
 	void start();
-	void restart();
 	void end();
 	void step();
 	void draw();
-	void set_scale(int _scale); 
+	void set_scale(int _scale);
 	int get_scale();
+	void set_resizable(bool _resizable);
 	int get_width();
 	int get_height();
 	int get_width_scaled();
@@ -27,5 +27,6 @@ class ce_window{
 	private:
 	int w, h, min_w, min_h, set_w, set_h;
 	bool active;
+	bool resizable;
 	int scale;
 };
