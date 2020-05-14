@@ -8,7 +8,7 @@
 
 class ce_window{
 	public:
-	ce_window();
+	ce_window(int _set_w, int _set_h, int _min_w, int _min_h);
 	void start();
 	void end();
 	void step();
@@ -16,10 +16,10 @@ class ce_window{
 	void set_scale(int _scale);
 	int get_scale();
 	void set_resizable(bool _resizable);
-	int get_width();
-	int get_height();
-	int get_width_scaled();
-	int get_height_scaled();
+	int get_w();
+	int get_h();
+	int get_ws();
+	int get_hs();
 	void set_focus();
 	SDL_Window * main_window;
 	SDL_Renderer * main_renderer;

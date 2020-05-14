@@ -1,15 +1,15 @@
 #include "window.h"
 
-ce_window :: ce_window(){
+ce_window :: ce_window(int _set_w, int _set_h, int _min_w, int _min_h){
 	//active flag
 	active=false;
 	//the base scale
 	scale = 1;
 	//set some size parameters
-	set_w = 640;
-	set_h = 360;
-	min_w = set_w;
-	min_h = set_h;
+	set_w = _set_w;
+	set_h = _set_h;
+	min_w = _min_w;
+	min_h = _min_h;
 	w = set_w;
 	h = set_h;
 	//resizable flag
@@ -90,5 +90,8 @@ void ce_window :: set_resizable(bool _resizable){
 	}
 }
 
-int ce_window :: get_width(){ return w; }
-int ce_window :: get_height(){ return h; }
+int ce_window :: get_w(){ return w; }
+int ce_window :: get_h(){ return h; }
+
+int ce_window :: get_ws(){ return w/get_scale(); }
+int ce_window :: get_hs(){ return h/get_scale(); }

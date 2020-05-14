@@ -7,6 +7,10 @@
 
 void draw_set_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 
+//thses 2 functions are mostly useful for our drawing code so we dont have to write the huge lines of garbage
+void draw_set_scale();
+void draw_reset_scale();
+
 void draw_clear();
 void draw_point(int x, int y);
 void draw_line(int x, int y, int x2, int y2);
