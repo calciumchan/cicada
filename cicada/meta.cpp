@@ -9,6 +9,8 @@ SDL_Event g_event;
 ce_window * g_focusedwindow = NULL;
 
 void cicada_start(){
+	//init SDL
+	SDL_Init(SDL_INIT_EVERYTHING);
 	//randomize
 	srand(10);
 	//

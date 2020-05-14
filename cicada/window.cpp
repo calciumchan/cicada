@@ -6,8 +6,8 @@ ce_window :: ce_window(){
 	//the base scale
 	scale = 1;
 	//set some size parameters
-	set_w = 360;
-	set_h = 640;
+	set_w = 640;
+	set_h = 360;
 	min_w = set_w;
 	min_h = set_h;
 	w = set_w;
@@ -16,13 +16,20 @@ ce_window :: ce_window(){
 
 void ce_window :: start(){
 	//create the window and renderer and set the active flag
-	SDL_CreateWindowAndRenderer(300,300,0,&main_window,&main_renderer);
+	SDL_CreateWindowAndRenderer(set_w,set_h,SDL_WINDOW_RESIZABLE,&main_window,&main_renderer);
 	bool active=true;
 }
 
 void ce_window :: step(){
 	//this gets the window size
 	SDL_GetWindowSize(main_window, &w, &h);
+	//set the window size if its too small
+	if( w < min_w ){
+		SDL_SetWindowSize(main_window, min_w, h);
+	}
+	if( h < min_h ){
+		SDL_SetWindowSize(main_window, w, min_h);
+	}
 }
 
 void ce_window :: draw(){
@@ -62,3 +69,6 @@ int ce_window :: get_scale(){
 		return scale;
 	}
 }
+
+int ce_window :: get_width(){ return w; }
+int ce_window :: get_height(){ return h; }
