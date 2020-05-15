@@ -40,34 +40,35 @@ void draw_rectangle(int x, int y, int x2, int y2){}
 
 void draw_spritesheet(ce_spritesheet spritesheet, int x, int y){
 	//get the scale
-	int scale = g_focusedwindow -> get_scale();
+	int win_scale = g_focusedwindow -> get_scale();
+	int spr_scale = spritesheet.get_scale();
 	//set p the rectangle to point to where to draw
 	SDL_Rect rect_screen;
-	rect_screen.x = x * scale;
-	rect_screen.y = y * scale;
+	rect_screen.x = x * win_scale;
+	rect_screen.y = y * win_scale;
 	//query the texture to get the right width and everything
-	SDL_QueryTexture(spritesheet.texture, NULL, NULL, &rect_screen.w, &rect_screen.h);
-	rect_screen.w *= scale;
-	rect_screen.h *= scale;
+	rect_screen.w = spritesheet.get_w() * win_scale;
+	rect_screen.h = spritesheet.get_h() * win_scale;
 	//draw to the screen
 	SDL_RenderCopy(g_focusedwindow -> main_renderer, spritesheet.texture, NULL, &rect_screen);
 }
 
 void draw_sprite(ce_spritesheet spritesheet, int x, int y, int w, int h, int srcx, int srcy, int srcw, int srch){
 	//get the scale
-	int scale = g_focusedwindow -> get_scale();
+	int win_scale = g_focusedwindow -> get_scale();
+	int spr_scale = spritesheet.get_scale();
 	//get a rect for where to draw on the screen
 	SDL_Rect rect_screen;
-	rect_screen.x = x * scale;
-	rect_screen.y = y * scale;
-	rect_screen.w = w * scale;
-	rect_screen.h = h * scale;
+	rect_screen.x = x * win_scale;
+	rect_screen.y = y * win_scale;
+	rect_screen.w = w * win_scale;
+	rect_screen.h = h * win_scale;
 	//get a rect for what part of the sheet to draw from
 	SDL_Rect rect_source;
-	rect_source.x = x;
-	rect_source.y = y;
-	rect_source.w = w;
-	rect_source.h = h;
+	rect_source.x = srcx * spr_scale;
+	rect_source.y = srcy * spr_scale;
+	rect_source.w = srcw * spr_scale;
+	rect_source.h = srch * spr_scale;
 	//draw to the screen
 	SDL_RenderCopy(g_focusedwindow -> main_renderer, spritesheet.texture, &rect_source, &rect_screen);
 }

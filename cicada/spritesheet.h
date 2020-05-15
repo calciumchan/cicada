@@ -20,10 +20,12 @@ class ce_spritesheet{
 	void set_themeable( bool _themeable );
 	int get_w();
 	int get_h();
+	int get_realw();
+	int get_realh();
 	int get_scale();
 	SDL_Texture * texture;
 	private:
-	int w,h;
+	int w,h,d_w,d_h;
 	int scale;
 	bool themeable;//if the sheet can be loaded from a theme
 	std::string name;
