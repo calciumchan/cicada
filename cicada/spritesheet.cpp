@@ -10,9 +10,13 @@ ce_spritesheet :: ce_spritesheet(){
 }
 
 void ce_spritesheet :: import(){
-	texture = import_sprite("testtext.png");
+	texture = import_sprite(name);
+	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
 }
 
 void ce_spritesheet :: set_name(std::string _name){
 	name = _name;
 }
+
+int ce_spritesheet :: get_w(){ return w;}
+int ce_spritesheet :: get_h(){ return h;}

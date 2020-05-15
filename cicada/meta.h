@@ -13,6 +13,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
+#include <string>
 
 //declare any and all clases we use here, anything with ce_
 class ce_window;
@@ -32,9 +33,11 @@ extern int g_tickrate;
 extern int g_framelimit;
 extern SDL_Event g_event;
 extern ce_window * g_focusedwindow;
+extern std::string g_theme;
 
 void cicada_start();
 void cicada_step();
 void cicada_draw();
 bool cicada_quit();
+void cicada_set_theme(std::string _g_theme);
 void cicada_log();//not done, idk if this is worth it

@@ -7,6 +7,7 @@ int g_tickrate = 60;
 int g_framelimit = 60;
 SDL_Event g_event;
 ce_window * g_focusedwindow = NULL;
+std::string g_theme = "";
 
 void cicada_start(){
 	//init SDL

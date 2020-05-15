@@ -11,7 +11,7 @@ int main( int argc, char* args[] ){
 	testwindow.set_resizable(true);
 	testwindow.set_scale(-1);
 	ce_spritesheet testtexture;
-	testtexture.set_name("testtext.png");
+	testtexture.set_name("testtext");
 	testtexture.import();
 	while(cicada_quit() == false){
 		cicada_step();
@@ -22,7 +22,9 @@ int main( int argc, char* args[] ){
 		if(testtexture.texture == NULL){
 			draw_line(0,0,testwindow.get_ws()/2,testwindow.get_hs()/2);
 		}
-		draw_spritesheet(testtexture,0,0);
+		int drawx = (testwindow.get_ws()/2)-(testtexture.get_w()/2);
+		int drawy = (testwindow.get_hs()/2)-(testtexture.get_h()/2);
+		draw_spritesheet(testtexture,drawx,drawy);
 		testwindow.draw();
 		cicada_draw();
 	}

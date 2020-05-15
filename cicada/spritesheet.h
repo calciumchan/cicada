@@ -18,8 +18,8 @@ class ce_spritesheet{
 	void set_name(std::string _name);
 	std::string get_name();
 	void set_themeable( bool _themeable );
-	int get_width();
-	int get_height();
+	int get_w();
+	int get_h();
 	int get_scale();
 	SDL_Texture * texture;
 	private:
