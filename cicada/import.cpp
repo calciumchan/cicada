@@ -5,7 +5,7 @@ SDL_Texture * import_sprite( std::string path ){
 	SDL_Texture * importedtexture = NULL;
 	
 	if(g_theme != ""){
-		path = std::string("themes/") + g_theme + path + std::string(".png");
+		path = std::string("themes/") + g_theme + std::string("/")  + path + std::string(".png");
 	}else{
 		path = std::string("base/") + path + std::string(".png");
 	}

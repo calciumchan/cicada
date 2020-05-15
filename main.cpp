@@ -5,6 +5,7 @@ int main( int argc, char* args[] ){
 	//cicada_start() should be run at the beginning of all programs
 	cicada_start();
 	//window stuff for testing
+	cicada_set_theme("testtheme");
 	ce_window testwindow(300,300,100,100);
 	testwindow.start();
 	testwindow.set_focus();

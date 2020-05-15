@@ -35,6 +35,10 @@ bool cicada_quit(){
 	return g_quit;
 }
 
+void cicada_set_theme(std::string _g_theme){
+	g_theme = _g_theme;
+}
+
 void cicada_log(){
 	//this will log an output to the terminal maybe, idk if im going to keep this just yet
 }
