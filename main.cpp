@@ -10,13 +10,19 @@ int main( int argc, char* args[] ){
 	testwindow.set_focus();
 	testwindow.set_resizable(true);
 	testwindow.set_scale(-1);
+	ce_spritesheet testtexture;
+	testtexture.set_name("testtext.png");
+	testtexture.import();
 	while(cicada_quit() == false){
 		cicada_step();
 		testwindow.step();
 		draw_set_color(255, 255, 255, 255);
 		draw_clear();
 		draw_set_color(0, 0, 0, 100);
-		draw_line(0,0,testwindow.get_ws()/2,testwindow.get_hs()/2);
+		if(testtexture.texture == NULL){
+			draw_line(0,0,testwindow.get_ws()/2,testwindow.get_hs()/2);
+		}
+		draw_spritesheet(testtexture,0,0);
 		testwindow.draw();
 		cicada_draw();
 	}

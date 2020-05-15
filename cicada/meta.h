@@ -24,6 +24,7 @@ class ce_spritesheet;//this still needs to be defined somewhere
 #include "draw.h"
 #include "spritesheet.h"
 #include "math.h"
+#include "import.h"
 
 //global variables
 extern bool g_quit;

@@ -11,6 +11,7 @@ ce_window * g_focusedwindow = NULL;
 void cicada_start(){
 	//init SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
+	IMG_Init(IMG_INIT_PNG);//were only initing PNG files because thats all i care about : )
 	//randomize
 	srand(10);
 	//

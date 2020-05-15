@@ -21,6 +21,7 @@ class ce_spritesheet{
 	int get_width();
 	int get_height();
 	int get_scale();
+	SDL_Texture * texture;
 	private:
 	int w,h;
 	int scale;
