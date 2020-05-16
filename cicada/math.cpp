@@ -15,6 +15,13 @@ int random_range(int min, int max){
 	return min+(rand()%(max-min));
 }
 
+float frandom(float max){
+	return rand()%max;
+}
+float frandom_range(float min, float max){
+	return min+(rand()%(max-min));
+}
+
 int min(int a, int b){
 	if( a > b){
 		return b;

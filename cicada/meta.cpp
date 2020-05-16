@@ -8,6 +8,7 @@ int g_framelimit = 60;
 SDL_Event g_event;
 ce_window * g_focusedwindow = NULL;
 std::string g_theme = "";
+double g_ticks = 0;
 
 void cicada_start(){
 	//init SDL
@@ -24,6 +25,9 @@ void cicada_step(){
 			g_quit = true;
 		}
 	}
+	//increment ticks
+	g_ticks++;
+	//delay, this needs to be replaced with a better function later
 	SDL_Delay(1000/g_tickrate);
 }
 

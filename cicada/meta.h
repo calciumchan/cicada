@@ -34,6 +34,7 @@ extern int g_framelimit;
 extern SDL_Event g_event;
 extern ce_window * g_focusedwindow;
 extern std::string g_theme;
+extern double g_ticks;
 
 void cicada_start();
 void cicada_step();
