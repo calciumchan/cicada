@@ -38,10 +38,28 @@ extern double g_ticks;
 //mouse variables global
 extern int m_x, m_y, m_xp, m_yp, m_xlc, m_ylc, m_xlc, m_yrc;
 extern bool m_rc, m_lc, m_mc, m_rr, m_lr, m_mr;
+extern char mb_left, mb_middle, mb_right, mb_none, mb_any;
 
+//functions
 void cicada_start();
 void cicada_step();
 void cicada_draw();
 bool cicada_quit();
 void cicada_set_theme(std::string _g_theme);
+
+//mouse functions
+int get_mouse_x();
+int get_mouse_y();
+int get_mouse_xp();
+int get_mouse_yp();
+int get_mouse_xlc();
+int get_mouse_ylc();
+int get_mouse_xmc();
+int get_mouse_ymc();
+int get_mouse_xrc();
+int get_mouse_yrc();
+bool get_mouse_pressed(char button);
+bool get_mouse_released(char button);
+
+//not finished, idfk
 void cicada_log();//not done, idk if this is worth it

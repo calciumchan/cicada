@@ -11,6 +11,7 @@ int main( int argc, char* args[] ){
 	testwindow.set_focus();
 	testwindow.set_resizable(true);
 	testwindow.set_scale(-1);
+	//texture stuff
 	ce_spritesheet testtexture;
 	testtexture.set_name("testtext");
 	testtexture.import();
@@ -21,7 +22,8 @@ int main( int argc, char* args[] ){
 		draw_clear();
 		draw_set_color(0, 0, 0, 100);
 		//mouse test
-		draw_line(m_x,m_y,m_xlc,m_ylc);
+		draw_line(get_mouse_x(), get_mouse_y(), get_mouse_xp(), get_mouse_yp());
+		draw_line(get_mouse_x(),get_mouse_y(),get_mouse_xlc(),get_mouse_ylc());
 		//draw sprite centered
 		int drawx = (testwindow.get_ws()/2)-(testtexture.get_w()/2);
 		int drawy = (testwindow.get_hs()/2)-(testtexture.get_h()/2);

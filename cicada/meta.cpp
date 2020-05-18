@@ -27,6 +27,12 @@ bool m_mc = false;
 bool m_rr = false;
 bool m_lr = false;
 bool m_mr = false;
+char mb_left = 'a';
+char mb_middle = 'b';
+char mb_right = 'c';
+char mb_none = 'd';
+char mb_any = 'e';
+
 
 void cicada_start(){
 	//init SDL
@@ -114,6 +120,38 @@ bool cicada_quit(){
 
 void cicada_set_theme(std::string _g_theme){
 	g_theme = _g_theme;
+}
+
+//MOUSE FUNCTIONS
+int get_mouse_x(){ return m_x/g_focusedwindow -> get_scale(); }
+int get_mouse_y(){ return m_y/g_focusedwindow -> get_scale(); }
+int get_mouse_xp(){ return m_xp/g_focusedwindow -> get_scale(); }
+int get_mouse_yp(){ return m_yp/g_focusedwindow -> get_scale(); }
+int get_mouse_xlc(){ return m_xlc/g_focusedwindow -> get_scale(); }
+int get_mouse_ylc(){ return m_ylc/g_focusedwindow -> get_scale(); }
+int get_mouse_xmc(){ return m_xmc/g_focusedwindow -> get_scale(); }
+int get_mouse_ymc(){ return m_ymc/g_focusedwindow -> get_scale(); }
+int get_mouse_xrc(){ return m_xrc/g_focusedwindow -> get_scale(); }
+int get_mouse_yrc(){ return m_yrc/g_focusedwindow -> get_scale(); }
+//MOUSE BUTTONS
+bool get_mouse_pressed(char button){
+	if(button == mb_left){ return m_lc; }
+	if(button == mb_middle){ return m_mc; }
+	if(button == mb_right){ return m_rc; }
+	if(button == mb_none){ 
+		if(m_lc == false && m_mc == false && m_rc == false){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	if(button == mb_any){ 
+		if(m_lc == true || m_mc == true || m_rc == true){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
 
 void cicada_log(){
