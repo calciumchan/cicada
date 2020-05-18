@@ -20,7 +20,9 @@ int main( int argc, char* args[] ){
 		draw_set_color(255, 255, 255, 255);
 		draw_clear();
 		draw_set_color(0, 0, 0, 100);
-		
+		//mouse test
+		draw_line(m_x,m_y,m_xlc,m_ylc);
+		//draw sprite centered
 		int drawx = (testwindow.get_ws()/2)-(testtexture.get_w()/2);
 		int drawy = (testwindow.get_hs()/2)-(testtexture.get_h()/2);
 		draw_spritesheet(testtexture,drawx,drawy);

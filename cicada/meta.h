@@ -25,7 +25,6 @@ class ce_spritesheet;//this still needs to be defined somewhere
 #include "draw.h"
 #include "spritesheet.h"
 #include "math.h"
-#include "import.h"
 
 //global variables
 extern bool g_quit;
@@ -35,6 +34,10 @@ extern SDL_Event g_event;
 extern ce_window * g_focusedwindow;
 extern std::string g_theme;
 extern double g_ticks;
+
+//mouse variables global
+extern int m_x, m_y, m_xp, m_yp, m_xlc, m_ylc, m_xlc, m_yrc;
+extern bool m_rc, m_lc, m_mc, m_rr, m_lr, m_mr;
 
 void cicada_start();
 void cicada_step();
