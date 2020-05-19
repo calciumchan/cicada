@@ -135,24 +135,81 @@ int get_mouse_xrc(){ return m_xrc/g_focusedwindow -> get_scale(); }
 int get_mouse_yrc(){ return m_yrc/g_focusedwindow -> get_scale(); }
 //MOUSE BUTTONS
 bool get_mouse_pressed(char button){
-	if(button == mb_left){ return m_lc; }
-	if(button == mb_middle){ return m_mc; }
-	if(button == mb_right){ return m_rc; }
-	if(button == mb_none){ 
-		if(m_lc == false && m_mc == false && m_rc == false){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	if(button == mb_any){ 
-		if(m_lc == true || m_mc == true || m_rc == true){
-			return true;
-		}else{
-			return false;
-		}
+	switch(button){
+		//MB_LEFT
+		case 'a':
+			if(m_xlc!=-1){return true;}else{return false;}
+			break;
+		//MB_MIDDLE
+		case 'b':
+			if(m_xmc!=-1){return true;}else{return false;}
+			break;
+		//MB_RIGHT
+		case 'c':
+			if(m_xrc!=-1){return true;}else{return false;}
+			break;
+		//MB_NONE
+		case 'd':
+			if(m_xlc == -1 && m_xmc == -1 && m_xrc == -1){return true;}else{return false;}
+			break;
+		//MB_ANY
+		case 'e':
+			if(m_xlc != -1 || m_xmc != -1 || m_xrc != -1){return true;}else{return false;}
 	}
 }
+
+bool get_mouse_clicked(char button){
+	switch(button){
+		//MB_LEFT
+		case 'a':
+			return m_lc;
+			break;
+		//MB_MIDDLE
+		case 'b':
+			return m_mc;
+			break;
+		//MB_RIGHT
+		case 'c':
+			return m_rc;
+			break;
+		//MB_NONE
+		case 'd':
+			if(m_lc == false && m_mc == false && m_rc == false){return true;}else{return false;}
+			break;
+		//MB_ANY
+		case 'e':
+			if(m_lc == true || m_mc == true || m_rc == true){return true;}else{return false;}
+			break;
+	}
+}
+
+bool get_mouse_released(char button){
+	switch(button){
+		//MB_LEFT
+		case 'a':
+			return m_lr;
+			break;
+		//MB_MIDDLE
+		case 'b':
+			return m_mr;
+			break;
+		//MB_RIGHT
+		case 'c':
+			return m_rr;
+			break;
+		//MB_NONE
+		case 'd':
+			if(m_lr == false && m_mr == false && m_rr == false){return true;}else{return false;}
+			break;
+		//MB_ANY
+		case 'e':
+			if(m_lr == true || m_mr == true || m_rr == true){return true;}else{return false;}
+			break;
+	}
+}
+//jesus fucking christ, please dear god dont let there be any errors in here
+//i dont want to have to come back to this mouse handling shit
+//if theres a better way of doing this i would really really like to know
 
 void cicada_log(){
 	//this will log an output to the terminal maybe, idk if im going to keep this just yet

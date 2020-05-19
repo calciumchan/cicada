@@ -59,6 +59,7 @@ int get_mouse_ymc();
 int get_mouse_xrc();
 int get_mouse_yrc();
 bool get_mouse_pressed(char button);
+bool get_mouse_clicked(char button);
 bool get_mouse_released(char button);
 
 //not finished, idfk
