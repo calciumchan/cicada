@@ -31,7 +31,8 @@ int main( int argc, char* args[] ){
 		int drawy = (testwindow.get_hs()/2)-(testtexture.get_h()/2);
 		draw_spritesheet(testtexture,drawx,drawy);
 		int offset = sin(g_ticks/32)*32;
-		draw_sprite(testtexture, 0, 0, offset, 32, 0, 0, 32, 32);
+		draw_sprite(testtexture, 32, 0, 32, 32, 0, 0);
+		draw_sprite_ex(testtexture,0,0,32,32,0,0,32,32,g_ticks,flip_both);
 		testwindow.draw();
 		cicada_draw();
 	}

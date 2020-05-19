@@ -3,6 +3,15 @@
 
 #include "draw.h"
 
+//flip variables
+char flip_none = 'a';
+char flip_h = 'b';
+char flip_v = 'c';
+char flip_both = 'd';
+
+
+
+//functions
 void draw_set_scale(){
 	SDL_RenderSetScale(g_focusedwindow -> main_renderer, g_focusedwindow -> get_scale(), g_focusedwindow -> get_scale());
 }
@@ -53,7 +62,7 @@ void draw_spritesheet(ce_spritesheet spritesheet, int x, int y){
 	SDL_RenderCopy(g_focusedwindow -> main_renderer, spritesheet.texture, NULL, &rect_screen);
 }
 
-void draw_sprite(ce_spritesheet spritesheet, int x, int y, int w, int h, int srcx, int srcy, int srcw, int srch){
+void draw_sprite(ce_spritesheet spritesheet, int x, int y, int w, int h, int srcx, int srcy){
 	//get the scale
 	int win_scale = g_focusedwindow -> get_scale();
 	int spr_scale = spritesheet.get_scale();
@@ -67,8 +76,45 @@ void draw_sprite(ce_spritesheet spritesheet, int x, int y, int w, int h, int src
 	SDL_Rect rect_source;
 	rect_source.x = srcx * spr_scale;
 	rect_source.y = srcy * spr_scale;
-	rect_source.w = srcw * spr_scale;
-	rect_source.h = srch * spr_scale;
+	rect_source.w = w * spr_scale;
+	rect_source.h = h * spr_scale;
 	//draw to the screen
 	SDL_RenderCopy(g_focusedwindow -> main_renderer, spritesheet.texture, &rect_source, &rect_screen);
+}
+
+void draw_sprite_ex(ce_spritesheet spritesheet, int x, int y, int w, int h, int srcx, int srcy, int srcw, int srch, double angle, char flip){
+	//get the scale
+	int win_scale = g_focusedwindow -> get_scale();
+	int spr_scale = spritesheet.get_scale();
+	//get a rect for where to draw on the screen
+	SDL_Rect rect_screen;
+	rect_screen.x = x * win_scale;
+	rect_screen.y = y * win_scale;
+	rect_screen.w = w * win_scale;
+	rect_screen.h = h * win_scale;
+	//get a rect for what part of the sheet to draw from
+	SDL_Rect rect_source;
+	rect_source.x = srcx * spr_scale;
+	rect_source.y = srcy * spr_scale;
+	rect_source.w = w * spr_scale;
+	rect_source.h = h * spr_scale;
+	//set up flip
+	SDL_RendererFlip srcflip;
+	switch(flip){
+		case 'a':
+			srcflip = SDL_FLIP_NONE;
+			break;
+		case 'b':
+			srcflip = SDL_FLIP_HORIZONTAL;
+			break;
+		case 'c':
+			srcflip = SDL_FLIP_VERTICAL;
+			break;
+		case 'd':
+			//i have no idea why this doesnt work
+			//SDL_RendererFlip rcflip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
+			break;
+	}
+	//actually draw to the screen
+	SDL_RenderCopyEx(g_focusedwindow -> main_renderer, spritesheet.texture, &rect_source, &rect_screen, angle, NULL, srcflip);
 }
