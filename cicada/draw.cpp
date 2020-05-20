@@ -9,9 +9,12 @@ char flip_h = 'b';
 char flip_v = 'c';
 char flip_both = 'd';
 
+//set the color
+void draw_set_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
+	SDL_SetRenderDrawColor(g_focusedwindow -> main_renderer, r, g, b, a);
+}
 
-
-//functions
+//functions for scale
 void draw_set_scale(){
 	SDL_RenderSetScale(g_focusedwindow -> main_renderer, g_focusedwindow -> get_scale(), g_focusedwindow -> get_scale());
 }
@@ -20,11 +23,20 @@ void draw_reset_scale(){
 	SDL_RenderSetScale(g_focusedwindow -> main_renderer, 1, 1);
 }
 
-
-void draw_set_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a){
-	SDL_SetRenderDrawColor(g_focusedwindow -> main_renderer, r, g, b, a);
+//clipping
+void draw_set_clip(int x, int y, int w, int h){
+	SDL_Rect rect;
+	rect.x = x;
+	rect.y = y;
+	rect.w = w;
+	rect.h = h;
+	SDL_RenderSetClipRect(g_focusedwindow -> main_renderer, &rect);
+}
+void draw_reset_clip(){
+	SDL_RenderSetClipRect(g_focusedwindow -> main_renderer, NULL);
 }
 
+//normal drawing
 void draw_clear(){
 	SDL_RenderClear(g_focusedwindow -> main_renderer);
 }

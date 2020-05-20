@@ -15,6 +15,11 @@ void draw_set_color(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 void draw_set_scale();
 void draw_reset_scale();
 
+//clipping
+void draw_set_clip(int x, int y, int w, int h);
+void draw_reset_clip();
+
+//draw normal stuff
 void draw_clear();
 void draw_point(int x, int y);
 void draw_line(int x, int y, int x2, int y2);
