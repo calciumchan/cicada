@@ -19,6 +19,10 @@ void draw_reset_scale();
 void draw_set_clip(int x, int y, int w, int h);
 void draw_reset_clip();
 
+//viewport
+void draw_set_viewport(int x, int y, int w, int h);
+void draw_reset_viewport();
+
 //draw normal stuff
 void draw_clear();
 void draw_point(int x, int y);

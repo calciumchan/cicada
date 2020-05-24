@@ -36,6 +36,19 @@ void draw_reset_clip(){
 	SDL_RenderSetClipRect(g_focusedwindow -> main_renderer, NULL);
 }
 
+//viewport
+void draw_set_viewport(int x, int y, int w, int h){
+	SDL_Rect rectviewport;
+	rectviewport.x = x;
+	rectviewport.y = y;
+	rectviewport.h = h;
+	rectviewport.w = w;
+	SDL_RenderSetViewport(g_focusedwindow -> main_renderer, &rectviewport);
+}
+void draw_reset_viewport(){
+	SDL_RenderSetViewport(g_focusedwindow -> main_renderer, NULL);
+}
+
 //normal drawing
 void draw_clear(){
 	SDL_RenderClear(g_focusedwindow -> main_renderer);
