@@ -20,6 +20,7 @@ void draw_set_clip(int x, int y, int w, int h);
 void draw_reset_clip();
 
 //viewport
+//this seems a little borked right now, needs work
 void draw_set_viewport(int x, int y, int w, int h);
 void draw_reset_viewport();
 
