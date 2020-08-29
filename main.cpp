@@ -1,5 +1,6 @@
 //main source file
 #include "cicada.h"
+#include "math.h"
 
 int main( int argc, char* args[] ){
 	//cicada_start() should be run at the beginning of all programs
@@ -43,7 +44,7 @@ int main( int argc, char* args[] ){
 			}
 		}
 		draw_reset_clip();
-		draw_set_viewport(get_mouse_x(),get_mouse_y(),300,300);
+		draw_set_viewport(fmod(g_ticks,300),0,300,300);
 		testwindow.set_scale(-1);
 		int drawx = (testwindow.get_ws()/2)-(testtexture.get_w()/2);
 		int drawy = (testwindow.get_hs()/2)-(testtexture.get_h()/2);
@@ -53,6 +54,8 @@ int main( int argc, char* args[] ){
 		draw_sprite_ex(testtexture,0,0,128,128,0,0,32,32,g_ticks,flip_none);
 		
 		draw_reset_viewport();
+		testwindow.set_scale(1);
+		draw_spritesheet(tex_mado,0,0);
 
 		testwindow.draw();
 		cicada_draw();

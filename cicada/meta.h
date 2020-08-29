@@ -14,6 +14,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_mixer.h>
 #include <string>
+#include <vector>
 
 //declare any and all clases we use here, anything with ce_
 class ce_window;
@@ -25,6 +26,7 @@ class ce_spritesheet;//this still needs to be defined somewhere
 #include "draw.h"
 #include "spritesheet.h"
 #include "math.h"
+#include "entity.h"
 
 //global variables
 extern bool g_quit;
@@ -34,6 +36,10 @@ extern SDL_Event g_event;
 extern ce_window * g_focusedwindow;
 extern std::string g_theme;
 extern double g_ticks;
+
+//entity stuff i guess i dont know what im doing
+//i dont know why this isnt working
+//extern std::vector<ce_entity> g_entities;
 
 //mouse variables global
 extern int m_x, m_y, m_xp, m_yp, m_xlc, m_ylc, m_xlc, m_yrc;
