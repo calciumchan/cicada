@@ -1,0 +1,6 @@
+{
+	"files.associations": {
+		"cicada.h": "c",
+		"stdio.h": "c"
+	}
+}
