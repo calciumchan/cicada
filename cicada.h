@@ -24,33 +24,47 @@ SDL_Event cicada_event;
 |
 |	STRUCTS
 |
-----------------------------------------------------------------------------------------------------*/
+----------------------------------------------------------------------------------------------------*/\
+//engine variables
 struct cicada_engine_struct{
-	int quit, render_target, render_target_is_texture;
+	//quit
+	int quit;
+	//rendering
+	int render_target, render_target_is_texture;
+	//ticks
+	unsigned int tick;
 } cicada_engine;
 
+//windows
 int cicada_window_max = 20;
 struct cicada_window_struct{
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	char *id[10];
 	char *title[50];
-	int open,w,h;
+	char open;
+	int w,h;
 } *cicada_window;
 
+//sprites
 int cicada_sprite_max = 1000;
 int cicada_sprite_count = 0;
 struct cicada_sprite_struct{
 	SDL_Texture *texture;
-	int loaded,important,w,h;
+	char loaded,important;
+	int w,h;
 	char *name[30];
 } *cicada_sprite;
 
+//IO keys
 int cicada_key_max = 200;
+int cicada_key_count = 0;
 struct cicada_key_struct{
 	int keysym,pressed;
+	char active;
 } *cicada_key;
 
+//settings, might delete later
 int cicada_setting_max = 500;
 struct cicada_setting_struct{
 	char *id[20];
@@ -62,7 +76,9 @@ struct cicada_setting_struct{
 |	SYSTEM
 |
 ----------------------------------------------------------------------------------------------------*/
-void start(){
+//starts up cicada engine
+//sets variables, allocates structs, and makes a new window with ID "main"
+void cicada_start(){
 	printf("CICADA ENGINE!\n  ,_  _  _,\n    \\o-o/\n   ,(.-.),\n _/ |) (| \\_\n   /\\=-=/\\\n  ,| \\=/ |,\n_/ \\  |  / \\_\n    \\_!_/ JGS\nMy hopes and dreams rest with you.\n\n");
 	
 	//INIT STRUCTS
@@ -81,30 +97,55 @@ void start(){
 	window_open("main","GAME");
 }
 
-void step(){
+//steps the engine forward, making changes as needed
+void cicada_step(){
+	//TICK
+	cicada_engine.tick++;
+	//TICK KEYS
+	for(int i = 0; i <= cicada_key_count; i++){
+		if(cicada_key[i].active == 1 && cicada_key[i].pressed>0){
+			cicada_key[i].pressed++;
+		}else if(cicada_key[i].active == 1 && cicada_key[i].pressed==-1){
+			cicada_key[i].pressed = 0;
+		}
+	}
 	//PULL INPUTS
 	while(SDL_PollEvent(&cicada_event)){
 		switch(cicada_event.type){
 			case SDL_QUIT:
 				cicada_quit();
 				break;
-			case SDL_WINDOWEVENT_CLOSE:
-				cicada_quit();
-				break;
 			case SDL_KEYDOWN:
-				printf("KEYCODE: %i\n",cicada_event.key.keysym.sym);
+				printf("PRESSED: %i\n",cicada_event.key.keysym.sym);
+				key_press(cicada_event.key.keysym.sym);
+				break;
+			case SDL_KEYUP:
+				printf("RELEASED: %i\n",cicada_event.key.keysym.sym);
+				key_release(cicada_event.key.keysym.sym);
 				break;
 		}
 	}
+	//SET WINDOW VARS
+	for(int i = 0; i < cicada_window_max; i++){
+		if(cicada_window[i].open == 1){
+			SDL_GetWindowSize(cicada_window[i].window,&cicada_window[i].w,&cicada_window[i].h);
+		}
+	}
+}
+
+//draws to the screen at the end
+void cicada_draw(){
 	//RENDER PRESENT
 	for(int i = 0; i < cicada_window_max; i++){
 		if(cicada_window[i].open == 1){
 			SDL_RenderPresent(cicada_window[i].renderer);
 		}
 	}
-};
+}
 
-void end(){
+//closes cicada
+//frees memory and quits SDL
+void cicada_end(){
 	//CLOSE UP DATA
 	window_close_all();
 	sprite_close_all_important();
@@ -125,11 +166,18 @@ void end(){
 	printf("CICADA ENDED <3!\n");
 }
 
+//tells program to quit
 void cicada_quit(){
 	cicada_engine.quit = 1;
 }
+
+//chekcs if a quit is wanted lol wtf
 int is_cicada_quit(){
 	return cicada_engine.quit;
+}
+
+int get_tick(){
+	return cicada_engine.tick;
 }
 
 /*----------------------------------------------------------------------------------------------------
@@ -137,6 +185,8 @@ int is_cicada_quit(){
 |	WINDOW
 |
 ----------------------------------------------------------------------------------------------------*/
+//opens a new window
+//tagged with an ID and given a window title
 void window_open(char *id[10], char *title[50]){
 	for(int i = 0; i < cicada_window_max; i++){
 		if(cicada_window[i].open == 0){
@@ -150,6 +200,8 @@ void window_open(char *id[10], char *title[50]){
 		}
 	}
 }
+
+//closes window that has ID
 void window_close(char *id[10]){
 	for(int i = 0; i < cicada_window_max; i++){
 		if(strcmp(cicada_window[i].id,id) == 0){
@@ -160,6 +212,7 @@ void window_close(char *id[10]){
 	}
 }
 
+//closes all active windows
 void window_close_all(){
 	for(int i = 0; i < cicada_window_max; i++){
 		SDL_DestroyWindow(cicada_window[i].window);
@@ -168,6 +221,7 @@ void window_close_all(){
 	}
 }
 
+//sets windows title if it has ID
 void window_set_title(char *id[10], char *title[50]){
 	for(int i = 0; i < cicada_window_max; i++){
 		if(strcmp(cicada_window[i].id,id) == 0){
@@ -175,11 +229,16 @@ void window_set_title(char *id[10], char *title[50]){
 		}
 	}
 }
+
+//sets window title for all windows
 void window_set_title_all(char *title[50]){
 	for(int i = 0; i < cicada_window_max; i++){
 		SDL_SetWindowTitle(cicada_window[i].window,title);
 	}
 }
+
+//sets window render target
+//doesnt work properly currently
 void window_set_target(char *id[10]){
 	for(int i = 0; i < cicada_window_max; i++){
 		if(strcmp(cicada_window[i].id,id) == 0){
@@ -188,10 +247,22 @@ void window_set_target(char *id[10]){
 		}
 	}
 }
+
+//gets the renderer for the target window
 SDL_Renderer *window_get_renderer(){
 	return cicada_window[cicada_engine.render_target].renderer;
 }
 
+//clears renderer of specific window
+void window_clear(char *id[10]){
+	for(int i = 0; i < cicada_window_max; i++){
+		if(strcmp(cicada_window[i].id,id) == 0 && cicada_window[i].open == 1){
+			SDL_RenderClear(cicada_window[i].renderer);
+		}
+	}
+}
+
+//clears all windows renderers
 void window_clear_all(){
 	for(int i = 0; i < cicada_window_max; i++){
 		if(cicada_window[i].open == 1){
@@ -200,17 +271,98 @@ void window_clear_all(){
 	}
 }
 
+//return window width
+int get_window_w(){
+	return cicada_window[cicada_engine.render_target].w;
+}
+
+//return window height
+int get_window_h(){
+	return cicada_window[cicada_engine.render_target].h;
+}
+
 /*----------------------------------------------------------------------------------------------------
 |
 |	KEY
 |
 ----------------------------------------------------------------------------------------------------*/
-void key_press(int keysym){}
-void key_release(int keysym){}
-void key_check(int keysym){}
-void key_check_pressed(int keysym){}
-void key_check_released(int keysym){}
-void key_check_pressing(int keysym){}
+//gets keys id if its in the array, if not, add key to the array
+int key_get_id(int keysym){
+
+	//CHECK IF KEY IS IN ARRAY
+	for(int i = 0; i <= cicada_key_count; i++){
+		if(cicada_key[i].active == 1 && cicada_key[i].keysym == keysym){
+			return i;
+		}
+	}
+	//IF ITS NOT, ADD IT TO THE ARRAY
+	for(int i = 0; i < cicada_key_max; i++){
+		if(cicada_key[i].active == 0){
+			//flag key as active
+			cicada_key[i].active = 1;
+			cicada_key[i].keysym = keysym;
+			//set count
+			if(i > cicada_key_count){
+				cicada_key_count = i;
+			}
+			//return key index
+			return i;
+		}
+	}
+	//return an error code if shit is fucked
+	return -1;
+}
+
+//presses down on key
+void key_press(int keysym){
+	int id = key_get_id(keysym);
+	if(id != -1 && cicada_key[id].pressed < 1){
+		cicada_key[id].pressed = 1;
+	}
+}
+
+//releases key
+void key_release(int keysym){
+	int id = key_get_id(keysym);
+	if(id != -1 && cicada_key[id].pressed >= 1){
+		cicada_key[id].pressed = -1;
+	}
+}
+
+//gives keys current state
+int key_check(int keysym){
+	int id = key_get_id(keysym);
+	if(id != -1 && cicada_key[id].pressed >= 1){
+		return cicada_key[id].pressed;
+	}
+	return 0;
+}
+
+//checks if key is 1 (pressed)
+char key_check_pressed(int keysym){
+	if(key_check(keysym)==1){
+		return 1;
+	}
+	return 0;
+}
+
+//checks if key is -1 (released)
+char key_check_released(int keysym){
+	if(key_check(keysym)==-1){
+		return 1;
+	}
+	return 0;
+}
+
+//checks if key is >0 (held)
+char key_check_hold(int keysym){
+	if(key_check(keysym)>=1){
+		return 1;
+	}
+	return 0;
+}
+
+//clears key inputs
 void key_clear(){}
 /*----------------------------------------------------------------------------------------------------
 |
@@ -248,6 +400,7 @@ float frandom_range(float min, float max){
 |	IMAGE LOADING
 |
 ----------------------------------------------------------------------------------------------------*/
+//loads sprite into memory
 int sprite_load(char *name[30]){
 	if(sprite_get_id(name) == -1){
 		for(int i = 0; i < cicada_sprite_max; i++){
@@ -291,10 +444,12 @@ int sprite_load(char *name[30]){
 	}
 }
 
+//loads sprite and flags it as important so it wont be cleaned out of memory
 int sprite_load_important(char *name[30]){
 	cicada_sprite[sprite_load(name)].important = 1;
 }
 
+//gets the index of sprite with NAME
 int sprite_get_id(char *name[30]){
 	for(int i = 0; i <= cicada_sprite_count; i++){
 		if(strcmp(cicada_sprite[i].name,name) == 0 && cicada_sprite[i].loaded == 1){
@@ -304,6 +459,7 @@ int sprite_get_id(char *name[30]){
 	return -1;
 }
 
+//closes sprite, removing it from memory, does affect important sprites
 void sprite_close(char *name[30]){
 	for(int i = 0; i <= cicada_sprite_max; i++){
 		if(strcmp(cicada_sprite[i].name,name) == 0){
@@ -316,6 +472,7 @@ void sprite_close(char *name[30]){
 	}
 }
 
+//closes all sprites except for important cards
 void sprite_close_all(){
 	for(int i = 0; i <= cicada_sprite_max; i++){
 		if(cicada_sprite[i].important == 0){
@@ -328,6 +485,7 @@ void sprite_close_all(){
 	}
 }
 
+//closes all sprites including important sprites
 void sprite_close_all_important(){
 	for(int i = 0; i <= cicada_sprite_max; i++){
 		cicada_sprite[i].loaded = 0;
