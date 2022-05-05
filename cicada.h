@@ -116,11 +116,9 @@ void cicada_step(){
 				cicada_quit();
 				break;
 			case SDL_KEYDOWN:
-				printf("PRESSED: %i\n",cicada_event.key.keysym.sym);
 				key_press(cicada_event.key.keysym.sym);
 				break;
 			case SDL_KEYUP:
-				printf("RELEASED: %i\n",cicada_event.key.keysym.sym);
 				key_release(cicada_event.key.keysym.sym);
 				break;
 		}
@@ -362,8 +360,15 @@ char key_check_hold(int keysym){
 	return 0;
 }
 
-//clears key inputs
-void key_clear(){}
+//clears keys
+void key_clear(){
+	for(int i = 0; i < cicada_key_max; i++){
+		cicada_key[i].keysym = 0;
+		cicada_key[i].active = 0;
+		cicada_key[i].pressed = 0;
+	}
+	cicada_key_count = 0;
+}
 /*----------------------------------------------------------------------------------------------------
 |
 |	gamepad
@@ -501,7 +506,9 @@ void sprite_close_all_important(){
 |	SPRITE DRAWING
 |
 ----------------------------------------------------------------------------------------------------*/
+//NORMAL DRAWING
 void draw_sprite_hud(char *name[30], int x, int y, int sx, int sy, int w, int h){
+	/*
 	int sprite_id = sprite_load(name);
 	if(w > cicada_sprite[sprite_id].w){w = cicada_sprite[sprite_id].w;}
 	if(h > cicada_sprite[sprite_id].h){h = cicada_sprite[sprite_id].h;}
@@ -516,8 +523,51 @@ void draw_sprite_hud(char *name[30], int x, int y, int sx, int sy, int w, int h)
 	dstrect.w = w;
 	dstrect.h = h;
 	SDL_RenderCopy(window_get_renderer(),cicada_sprite[sprite_id].texture,&srcrect,&dstrect);
+	*/
+	draw_sprite_hud_ex(name,x,y,sx,sy,w,h,w,h,0,0,0,0,0);
 };
 
-void draw_sprite_hud_ex(){};
-void draw_sprite(){};
-void draw_sprite_ex(){};
+//DRAW SPRITE ROTATED
+void draw_sprite_hud_rotate(char *name[30],int x, int y, int sx, int sy, int w, int h, double angle, int rx, int ry){
+	draw_sprite_hud_ex(name,x,y,sx,sy,w,h,w,h,angle,rx,ry,0,0);
+}
+
+//DRAW SPRITE FLIPPED
+void draw_sprite_hud_flip(char *name[30],int x, int y, int sx, int sy, int w, int h, char hflip, char vflip){
+	draw_sprite_hud_ex(name,x,y,sx,sy,w,h,w,h,0,0,0,hflip,vflip);
+}
+
+void draw_sprite_hud_stretch(char *name[30], int x, int y, int sx, int sy, int w, int h, int sw, int sh){
+	draw_sprite_hud_ex(name,x,y,sx,sy,w,h,sw,sh,0,0,0,0,0);
+}
+
+//DRAWING WITH ALL THE FEATURES OF RENDER COPY
+void draw_sprite_hud_ex(char *name[30], int x, int y, int sx, int sy, int w, int h, int sw, int sh, double angle, int rx, int ry, char hflip, char vflip){
+	int sprite_id = sprite_load(name);
+	if(w > cicada_sprite[sprite_id].w){w = cicada_sprite[sprite_id].w;}
+	if(h > cicada_sprite[sprite_id].h){h = cicada_sprite[sprite_id].h;}
+	SDL_Rect srcrect;
+	srcrect.x = sx;
+	srcrect.y = sy;
+	srcrect.w = sw;
+	srcrect.h = sh;
+	SDL_Rect dstrect;
+	dstrect.x = x;
+	dstrect.y = y;
+	dstrect.w = w;
+	dstrect.h = h;
+	SDL_Point rotpoint;
+	rotpoint.x = rx;
+	rotpoint.y = ry;
+	SDL_RendererFlip flip;
+	if(hflip == 1 && vflip == 1){
+		flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
+	}else if(hflip == 1 && vflip != 1){
+		flip = SDL_FLIP_HORIZONTAL;
+	}else if(hflip != 1 && vflip == 1){
+		flip = SDL_FLIP_VERTICAL;
+	}else{
+		flip = SDL_FLIP_NONE;
+	}
+	SDL_RenderCopyEx(window_get_renderer(),cicada_sprite[sprite_id].texture,&srcrect,&dstrect,angle,&rotpoint,flip);
+};
