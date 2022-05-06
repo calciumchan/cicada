@@ -27,8 +27,10 @@ SDL_Event cicada_event;
 ----------------------------------------------------------------------------------------------------*/\
 //engine variables
 struct cicada_engine_struct{
+	//started
+	char started;
 	//quit
-	int quit;
+	char quit;
 	//rendering
 	int render_target, render_target_is_texture;
 	//ticks
@@ -36,7 +38,7 @@ struct cicada_engine_struct{
 } cicada_engine;
 
 //windows
-int cicada_window_max = 20;
+int cicada_window_max = 1;
 struct cicada_window_struct{
 	SDL_Window *window;
 	SDL_Renderer *renderer;
@@ -47,7 +49,7 @@ struct cicada_window_struct{
 } *cicada_window;
 
 //sprites
-int cicada_sprite_max = 1000;
+int cicada_sprite_max = 0;
 int cicada_sprite_count = 0;
 struct cicada_sprite_struct{
 	SDL_Texture *texture;
@@ -57,7 +59,7 @@ struct cicada_sprite_struct{
 } *cicada_sprite;
 
 //IO keys
-int cicada_key_max = 200;
+int cicada_key_max = 0;
 int cicada_key_count = 0;
 struct cicada_key_struct{
 	int keysym,pressed;
@@ -65,36 +67,64 @@ struct cicada_key_struct{
 } *cicada_key;
 
 //settings, might delete later
-int cicada_setting_max = 500;
+int cicada_setting_max = 0;
 struct cicada_setting_struct{
 	char *id[20];
 	int value,min,max;
 } *cicada_setting;
+
+int cicada_gamepad_max = 0;
+struct cicada_gamepad_struct{
+	SDL_GameController *gamecontroller;
+} *cicada_gamepad;
+
+int cicada_controller_max = 0;
+struct cicada_controller_struct{
+	int input; //-1 for keyboard, 0+ for gamepad
+
+} *cicada_controller;
 
 /*----------------------------------------------------------------------------------------------------
 |
 |	SYSTEM
 |
 ----------------------------------------------------------------------------------------------------*/
+void cicada_start(){
+	cicada_start_ex(1,1000,500,500,16);
+}
 //starts up cicada engine
 //sets variables, allocates structs, and makes a new window with ID "main"
-void cicada_start(){
-	printf("CICADA ENGINE!\n  ,_  _  _,\n    \\o-o/\n   ,(.-.),\n _/ |) (| \\_\n   /\\=-=/\\\n  ,| \\=/ |,\n_/ \\  |  / \\_\n    \\_!_/ JGS\nMy hopes and dreams rest with you.\n\n");
-	
-	//INIT STRUCTS
-	cicada_window = calloc(cicada_window_max,sizeof(struct cicada_window_struct));
-	cicada_sprite = calloc(cicada_sprite_max,sizeof(struct cicada_sprite_struct));
-	cicada_key = calloc(cicada_key_max,sizeof(struct cicada_key_struct));
-	cicada_setting = calloc(cicada_setting_max,sizeof(struct cicada_setting_struct));
+void cicada_start_ex(int max_windows, int max_sprites, int max_keys, int max_settings, int max_gamepads){
+	if(cicada_engine.started == 0){
+		//SET ENGINE STARTED FLAG
+		cicada_engine.started = 1;
 
-	//INIT SDL
-	SDL_Init(SDL_INIT_EVERYTHING);
-	IMG_Init(IMG_INIT_PNG);
-	TTF_Init();
-	Mix_Init(MIX_INIT_OGG|MIX_INIT_MP3);
+		//PRINT STARTUP SLOGAN
+		printf("CICADA ENGINE!\n  ,_  _  _,\n    \\o-o/\n   ,(.-.),\n _/ |) (| \\_\n   /\\=-=/\\\n  ,| \\=/ |,\n_/ \\  |  / \\_\n    \\_!_/ JGS\nMy hopes and dreams rest with you.\n\n");
+		
+		//SET MAXES
+		cicada_window_max = max_windows;
+		cicada_sprite_max = max_sprites;
+		cicada_key_max = max_keys;
+		cicada_setting_max = max_settings;
+		cicada_gamepad_max = max_gamepads;
 
-	//OPEN MAIN WINDOW
-	window_open("main","GAME");
+		//INIT STRUCTS
+		cicada_window = calloc(cicada_window_max,sizeof(struct cicada_window_struct));
+		cicada_sprite = calloc(cicada_sprite_max,sizeof(struct cicada_sprite_struct));
+		cicada_key = calloc(cicada_key_max,sizeof(struct cicada_key_struct));
+		cicada_setting = calloc(cicada_setting_max,sizeof(struct cicada_setting_struct));
+		cicada_gamepad = calloc(cicada_gamepad_max,sizeof(struct cicada_gamepad_struct));
+
+		//INIT SDL
+		SDL_Init(SDL_INIT_EVERYTHING);
+		IMG_Init(IMG_INIT_PNG);
+		TTF_Init();
+		Mix_Init(MIX_INIT_OGG|MIX_INIT_MP3);
+
+		//OPEN MAIN WINDOW
+		window_open("main","GAME");
+	}
 }
 
 //steps the engine forward, making changes as needed
@@ -147,12 +177,14 @@ void cicada_end(){
 	//CLOSE UP DATA
 	window_close_all();
 	sprite_close_all_important();
+	gamepad_close_all();
 
 	//FREE STRUCTS
 	free(cicada_window);
 	free(cicada_sprite);
 	free(cicada_key);
 	free(cicada_setting);
+	free(cicada_gamepad);
 
 	//QUIT SDL
 	SDL_Quit();
@@ -360,6 +392,11 @@ char key_check_hold(int keysym){
 	return 0;
 }
 
+//does the same as above but check if ANY key is interacted with
+char key_check_any_pressed(int keysym){}
+char key_check_any_released(int keysym){}
+char key_check_any_hold(int keysym){}
+
 //clears keys
 void key_clear(){
 	for(int i = 0; i < cicada_key_max; i++){
@@ -371,12 +408,60 @@ void key_clear(){
 }
 /*----------------------------------------------------------------------------------------------------
 |
-|	gamepad
+|	GAMEPAD
 |
 ----------------------------------------------------------------------------------------------------*/
+void gamepad_open_all(){
+	for(int i = 0; i < cicada_gamepad_max; i++){
+		cicada_gamepad[i].gamecontroller = SDL_GameControllerOpen(i);
+		if(cicada_gamepad[i].gamecontroller != NULL){
+			printf(SDL_GameControllerName(cicada_gamepad[i].gamecontroller));
+			printf(" LOADED IN SLOT %i\n",i);
+		}
+	}
+}
+
+void gamepad_close_all(){
+	for(int i = 0; i < cicada_gamepad_max; i++){
+		if(cicada_gamepad[i].gamecontroller != NULL){
+			SDL_GameControllerClose(cicada_gamepad[i].gamecontroller);
+		}
+	}
+}
+
+void gamepad_button_press(){}
+void gamepad_button_release(){}
+
+//returns a true or false for buttons
+int gamepad_get_button(int gamepadid, int btn){
+	return SDL_GameControllerGetButton(cicada_gamepad[gamepadid].gamecontroller,btn);
+}
+
+int gamepad_get_leftx(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_LEFTX);
+}
+int gamepad_get_lefty(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_LEFTY);
+}
+int gamepad_get_rightx(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_RIGHTX);
+}
+int gamepad_get_righty(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_RIGHTY);
+}
+int gamepad_get_triggerl(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_TRIGGERLEFT);
+}
+int gamepad_get_triggerr(int gamepadid){
+	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_TRIGGERRIGHT);
+}
+
+
+
+
 /*----------------------------------------------------------------------------------------------------
 |
-|	controller
+|	CONTROLLER
 |
 ----------------------------------------------------------------------------------------------------*/
 
@@ -508,22 +593,6 @@ void sprite_close_all_important(){
 ----------------------------------------------------------------------------------------------------*/
 //NORMAL DRAWING
 void draw_sprite_hud(char *name[30], int x, int y, int sx, int sy, int w, int h){
-	/*
-	int sprite_id = sprite_load(name);
-	if(w > cicada_sprite[sprite_id].w){w = cicada_sprite[sprite_id].w;}
-	if(h > cicada_sprite[sprite_id].h){h = cicada_sprite[sprite_id].h;}
-	SDL_Rect srcrect;
-	srcrect.x = sx;
-	srcrect.y = sy;
-	srcrect.w = w;
-	srcrect.h = h;
-	SDL_Rect dstrect;
-	dstrect.x = x;
-	dstrect.y = y;
-	dstrect.w = w;
-	dstrect.h = h;
-	SDL_RenderCopy(window_get_renderer(),cicada_sprite[sprite_id].texture,&srcrect,&dstrect);
-	*/
 	draw_sprite_hud_ex(name,x,y,sx,sy,w,h,w,h,0,0,0,0,0);
 };
 
