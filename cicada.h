@@ -58,6 +58,15 @@ struct cicada_sprite_struct{
 	char *name[30];
 } *cicada_sprite;
 
+//fonts
+int cicada_font_max = 0;
+int cicada_font_count = 0;
+struct cicada_font_struct{
+	TTF_Font *font;
+	char *name[20];
+	char loaded;
+} *cicada_font;
+
 //IO keys
 int cicada_key_max = 0;
 int cicada_key_count = 0;
@@ -90,21 +99,22 @@ struct cicada_controller_struct{
 |
 ----------------------------------------------------------------------------------------------------*/
 void cicada_start(){
-	cicada_start_ex(1,1000,500,500,16);
+	cicada_start_ex(1,1000,10,500,500,16);
 }
 //starts up cicada engine
 //sets variables, allocates structs, and makes a new window with ID "main"
-void cicada_start_ex(int max_windows, int max_sprites, int max_keys, int max_settings, int max_gamepads){
+void cicada_start_ex(int max_windows, int max_sprites, int max_fonts, int max_keys, int max_settings, int max_gamepads){
 	if(cicada_engine.started == 0){
 		//SET ENGINE STARTED FLAG
 		cicada_engine.started = 1;
 
 		//PRINT STARTUP SLOGAN
-		printf("CICADA ENGINE!\n  ,_  _  _,\n    \\o-o/\n   ,(.-.),\n _/ |) (| \\_\n   /\\=-=/\\\n  ,| \\=/ |,\n_/ \\  |  / \\_\n    \\_!_/ JGS\nMy hopes and dreams rest with you.\n\n");
+		printf("CICADA ENGINE!\n  ,_  _  _,\n    \\o-o/\n   ,(.-.),\n _/ |) (| \\_\n   /\\=-=/\\\n  ,| \\=/ |,\n_/ \\  |  / \\_\n    \\_!_/ JGS\n");
 		
 		//SET MAXES
 		cicada_window_max = max_windows;
 		cicada_sprite_max = max_sprites;
+		cicada_font_max = max_fonts;
 		cicada_key_max = max_keys;
 		cicada_setting_max = max_settings;
 		cicada_gamepad_max = max_gamepads;
@@ -112,6 +122,7 @@ void cicada_start_ex(int max_windows, int max_sprites, int max_keys, int max_set
 		//INIT STRUCTS
 		cicada_window = calloc(cicada_window_max,sizeof(struct cicada_window_struct));
 		cicada_sprite = calloc(cicada_sprite_max,sizeof(struct cicada_sprite_struct));
+		cicada_font = calloc(cicada_font_max,sizeof(struct cicada_font_struct));
 		cicada_key = calloc(cicada_key_max,sizeof(struct cicada_key_struct));
 		cicada_setting = calloc(cicada_setting_max,sizeof(struct cicada_setting_struct));
 		cicada_gamepad = calloc(cicada_gamepad_max,sizeof(struct cicada_gamepad_struct));
@@ -178,10 +189,12 @@ void cicada_end(){
 	window_close_all();
 	sprite_close_all_important();
 	gamepad_close_all();
+	font_close_all();
 
 	//FREE STRUCTS
 	free(cicada_window);
 	free(cicada_sprite);
+	free(cicada_font);
 	free(cicada_key);
 	free(cicada_setting);
 	free(cicada_gamepad);
@@ -429,14 +442,12 @@ void gamepad_close_all(){
 	}
 }
 
-void gamepad_button_press(){}
-void gamepad_button_release(){}
-
 //returns a true or false for buttons
 int gamepad_get_button(int gamepadid, int btn){
 	return SDL_GameControllerGetButton(cicada_gamepad[gamepadid].gamecontroller,btn);
 }
 
+//returns various axis values
 int gamepad_get_leftx(int gamepadid){
 	return SDL_GameControllerGetAxis(cicada_gamepad[gamepadid].gamecontroller,SDL_CONTROLLER_AXIS_LEFTX);
 }
@@ -640,3 +651,75 @@ void draw_sprite_hud_ex(char *name[30], int x, int y, int sx, int sy, int w, int
 	}
 	SDL_RenderCopyEx(window_get_renderer(),cicada_sprite[sprite_id].texture,&srcrect,&dstrect,angle,&rotpoint,flip);
 };
+
+/*----------------------------------------------------------------------------------------------------
+|
+|	TEXT RENDERING AND LOADING
+|
+----------------------------------------------------------------------------------------------------*/
+//load font and return index of font
+int font_load(char *name[20]){
+	//check if already loaded
+	for(int i = 0; i < cicada_font_count; i++){
+		if(cicada_font[i].loaded == 1 && strcmp(cicada_font[i].name,name)==0){
+			return i;
+		}
+	}
+	//load
+	for(int i = 0; i < cicada_font_max; i++){
+		if(cicada_font[i].loaded == 0){
+			//GET NAME
+			char filename[100] = "assets/";
+			strcat(filename,name);
+			strcat(filename,".ttf");
+			//LOAD
+			cicada_font[i].font = TTF_OpenFont(filename,32);
+			cicada_font[i].loaded = 1;
+			return i;
+		}
+	}
+	//if something goes wrong, default to  0
+	return 0;
+};
+void font_close(char *name[20]){};
+
+//close all fonts
+void font_close_all(){
+	for(int i = 0; i < cicada_font_max; i ++){
+		TTF_CloseFont(cicada_font[i].font);
+		cicada_font[i].loaded = 0;
+	}
+}
+void set_font(){};
+
+//draws text at X Y
+void draw_text(int x, int y, char *text){
+	SDL_Color color = {255,1,1};
+	SDL_Surface *surface = TTF_RenderText_Solid(cicada_font[0].font,text,color);
+	SDL_Texture *texture= SDL_CreateTextureFromSurface(window_get_renderer(),surface);
+	SDL_Rect dstrect = {x,y,0,0};
+	SDL_QueryTexture(texture,NULL,NULL,&dstrect.w,&dstrect.h);
+	SDL_RenderCopy(window_get_renderer(),texture,NULL,&dstrect);
+	SDL_FreeSurface(surface);
+	SDL_DestroyTexture(texture);
+};
+
+/*----------------------------------------------------------------------------------------------------
+|
+|	SOUND PLAYING AND LOADING
+|
+----------------------------------------------------------------------------------------------------*/
+void load_sound(){};
+void play_sound(){};
+void stop_sound(){};
+void set_sound_pitch(){};
+void set_sound_volume(){};
+
+/*----------------------------------------------------------------------------------------------------
+|
+|	SHUT THE FUCK UP
+|
+----------------------------------------------------------------------------------------------------*/
+void funny(){
+	
+}
